@@ -44,7 +44,7 @@ def train_meta_model(feature_frame: pd.DataFrame | str | None = None, evaluation
 
     values = []
     model = ModelArchitecture(len(feature_frame.columns),
-                       len(evaluations_frame.columns)).to(options.device)
+                              len(evaluations_frame.columns)).to(options.device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     criterion = nn.MSELoss()
@@ -87,7 +87,7 @@ def train_meta_model(feature_frame: pd.DataFrame | str | None = None, evaluation
 def save_meta_model(model: ModelArchitecture, preprocessor: Any, save_path: str):
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-
+    model = model.to('cpu')
     torch.save(model.state_dict(), save_path + '/model.pth')
     with open(save_path + '/model_params.pkl', 'wb') as f:
         pickle.dump({'input_size': model.fc1.in_features,

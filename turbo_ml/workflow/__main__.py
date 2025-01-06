@@ -3,6 +3,7 @@ from prefect import flow
 from turbo_ml.workflow import (generate_training_parameters, train_meta_model,
                                save_meta_model, load_algorithms_evaluations, test_TurboML)
 from turbo_ml.meta_learning.dataset_parameters.sota import get_sota_meta_features
+from turbo_ml.utils import options
 
 
 @flow(name='Full Meta Model Workflow', log_prints=True)
@@ -18,5 +19,4 @@ def full_pipeline() -> Tuple[int]:
 
 
 if __name__ == '__main__':
-    from turbo_ml.utils import options
     full_pipeline()
