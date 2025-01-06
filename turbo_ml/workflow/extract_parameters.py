@@ -1,7 +1,7 @@
 import os
 import pprint
 import pandas as pd
-from turbo_ml.preprocessing import Normalizer, NanImputer, Encoder, LabelEncoder
+from turbo_ml.preprocessing import Normalizer, NanImputer, Encoder
 from turbo_ml.meta_learning.dataset_parameters import (
     SimpleMetaFeatures,
     CombinedMetaFeatures,
@@ -48,7 +48,8 @@ def generate_training_parameters(
                 continue
 
             parameters["name"] = dataset_name
-            dataframe = pd.concat([dataframe, pd.DataFrame([parameters])], axis=0)
+            dataframe = pd.concat(
+                [dataframe, pd.DataFrame([parameters])], axis=0)
 
         except Exception as e:
             print(f"Error processing dataset {dataset_name}: {e}")
@@ -89,7 +90,8 @@ def generate_training_parameters_pydataset(
                 continue
 
             parameters["name"] = dataset_name
-            dataframe = pd.concat([dataframe, pd.DataFrame([parameters])], axis=0)
+            dataframe = pd.concat(
+                [dataframe, pd.DataFrame([parameters])], axis=0)
 
         except Exception as e:
             print(f"Error processing dataset {dataset_name}: {e}")
@@ -100,4 +102,5 @@ def generate_training_parameters_pydataset(
 
 
 if __name__ == "__main__":
-    generate_training_parameters_pydataset(meta_data_extractor=BallMapperFeatures())
+    generate_training_parameters_pydataset(
+        meta_data_extractor=BallMapperFeatures())

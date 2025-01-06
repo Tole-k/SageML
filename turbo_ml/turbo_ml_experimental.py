@@ -24,7 +24,7 @@ class TurboML_Experimental:
         if tuner is None:
             tuner = HyperTuner()
         if param_function is None:
-            param_function = get_sota_meta_features()
+            param_function = get_sota_meta_features(options.meta_features)
         options.device = device
         options.threads = threads
         self._algorithm = DummyModel

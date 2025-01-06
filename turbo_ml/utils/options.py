@@ -18,6 +18,7 @@ class options:
         self.hyperparameters_declaration_priority: Literal['sklearn',
                                                            'custom'] = 'custom'
         self.hpo_trials = 10
+        self.meta_features = 'all'
 
     @property
     def device(self):

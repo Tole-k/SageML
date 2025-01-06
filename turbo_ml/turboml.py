@@ -98,7 +98,7 @@ class TurboML:
             raise Exception("Preprocessing failed")
         self.logger.info('Preprocessing completed')
         try:
-            dataset_params = get_sota_meta_features()(
+            dataset_params = get_sota_meta_features(options.meta_features)(
                 data, target_data, as_dict=True)
         except Exception:
             raise Exception("Dataset description failed")
