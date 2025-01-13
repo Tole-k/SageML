@@ -105,7 +105,7 @@ twine==5.1.1
 typing_extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.2
-virtualenv==20.26.3
+virtualenv==20.26.6
 wcwidth==0.2.13
 xattr==1.1.0
 xgboost==2.1.1
