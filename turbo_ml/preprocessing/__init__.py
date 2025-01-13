@@ -4,3 +4,4 @@ from .encoder import Encoder
 from .standardizer import Standardizer
 from .variance_selector import VarianceSelector
 from .sota import sota_preprocessor
+from .type_inferer import TypeInferer

@@ -35,8 +35,7 @@ class BallMapperFeatures(MetaFeature):
             points = points if len(points) > 0 else [0]
             point_lengths = np.array(
                 list(map(len, bm.points_covered_by_landmarks.values())))
-            features[f'number_of_landmarks_at_{eps}'] = float(
-                point_lengths.shape[0])
+            features[f'number_of_landmarks_at_{eps}'] = point_lengths.shape[0]
             features[f'mean_len_at_{eps}'] = point_lengths.mean()
             features[f'min_len_at_{eps}'] = point_lengths.min()
             features[f'max_len_at_{eps}'] = point_lengths.max()

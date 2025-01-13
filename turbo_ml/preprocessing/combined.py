@@ -20,7 +20,12 @@ class CombinedPreprocessor(Preprocessor):
 
     def fit_transform_target(self, target: pd.Series) -> pd.DataFrame | pd.Series:
         for model in self.models:
+            # print(f"pre {model.__class__.__name__}")
+            # print(target)
+            # print(target.dtypes)
             target = model.fit_transform_target(target)
+        # print(target)
+        # print(target.dtypes)
         return target
 
     def transform_target(self, target: pd.Series) -> pd.DataFrame | pd.Series:

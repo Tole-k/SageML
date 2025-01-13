@@ -1,7 +1,7 @@
 import os
 import pprint
 import pandas as pd
-from turbo_ml.preprocessing import Normalizer, NanImputer, Encoder
+from turbo_ml.preprocessing import Normalizer, NanImputer, Encoder, sota_preprocessor
 from turbo_ml.meta_learning.dataset_parameters import (
     SimpleMetaFeatures,
     CombinedMetaFeatures,

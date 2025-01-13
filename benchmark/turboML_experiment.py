@@ -1,6 +1,6 @@
+from turbo_ml.base import get_models_list
 from turbo_ml.utils import options
-from turbo_ml.base import __ALL_MODELS__
-from turbo_ml.meta_learning import MetaModelGuesser, sota_dataset_parameters
+from turbo_ml.meta_learning import MetaModelGuesser, get_sota_meta_features
 from turbo_ml.preprocessing import sota_preprocessor
 from turbo_ml.meta_learning.meta_model import as_meta_model
 import pandas as pd
@@ -10,11 +10,6 @@ from utils import BaseExperiment, _FAMILY_MAPPING
 
 import sys
 sys.path.append('.')
-from turbo_ml.meta_learning.meta_model import as_meta_model
-from turbo_ml.preprocessing import sota_preprocessor
-from turbo_ml.meta_learning import MetaModelGuesser, sota_dataset_parameters
-from turbo_ml.base import get_models_list
-from turbo_ml.utils import options
 
 
 class TurboMLExperiment(BaseExperiment):
@@ -36,7 +31,7 @@ class TurboMLExperiment(BaseExperiment):
         preprocessor = sota_preprocessor()
         data = preprocessor.fit_transform(data)
         target_data = preprocessor.fit_transform_target(target_data)
-        dataset_params = sota_dataset_parameters(
+        dataset_params = get_sota_meta_features(
             data, target_data, as_dict=True, old=False)
         guesser = MetaModelGuesser(
             model=model, preprocessors=preprocessor_dataset)

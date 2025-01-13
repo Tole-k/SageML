@@ -4,6 +4,7 @@ from sklearn.preprocessing import (
     OneHotEncoder as sklearnOneHotEncoder,
     LabelEncoder as sklearnLabelEncoder,
 )
+from .type_inferer import TypeInferer
 
 
 class Encoder(Preprocessor):
@@ -11,65 +12,51 @@ class Encoder(Preprocessor):
         super().__init__()
         self.encoder = sklearnOneHotEncoder(drop="if_binary", handle_unknown="ignore")
         self.target_encoder = sklearnLabelEncoder()
+        self.type_inferer = TypeInferer()
 
     def fit_transform(self, data: pd.DataFrame, unique_values_cap=20) -> pd.DataFrame:
+        x_dtypes = self.type_inferer.infer(data)
         self.column_order = data.columns
-        categorical_cols = data.select_dtypes(
-            include=["category", object, "string"]
-        ).map(lambda x: str(x))
-        self.cols_to_drop = categorical_cols.columns
-        num_cols = data.drop(columns=self.cols_to_drop)
-        categorical_cols.drop(
-            columns=categorical_cols.loc[
-                :, categorical_cols.nunique() > unique_values_cap
-            ].columns,
-            inplace=True,
-        )
-        self.categorical_cols = categorical_cols.columns
-        encoded_data = pd.DataFrame(
-            self.encoder.fit_transform(categorical_cols).toarray(),
-            columns=self.encoder.get_feature_names_out(),
-        )
+        self.categorical_cols = x_dtypes[x_dtypes.isin(["string", "mixed-integer", "categorical", "mixed"])].index
+        numerical_frame = data.drop(columns=self.categorical_cols)
+        self.numerical_cols = numerical_frame.columns
+        categorical_frame = data[self.categorical_cols].astype(str)
+        categorical_frame.drop(columns=categorical_frame.loc[:, categorical_frame.nunique() > unique_values_cap].columns, inplace=True)
+        self.categorical_cols = categorical_frame.columns
+        encoded_data = pd.DataFrame(self.encoder.fit_transform(categorical_frame).toarray(), columns=self.encoder.get_feature_names_out()).astype(bool)
         self.encoded_cols = encoded_data.columns
-        data = pd.concat([num_cols, encoded_data], axis=1)
+        data = pd.concat([numerical_frame, encoded_data], axis=1)
         return data
 
-    def fit_transform_target(self, target: pd.Series) -> pd.DataFrame | pd.Series:
-        if not pd.api.types.is_float_dtype(target):
-            target = pd.Series(
-                self.target_encoder.fit_transform(target), name=target.name
-            )
+    def fit_transform_target(self, target: pd.Series) -> pd.Series:
+        y_dtype = self.type_inferer.infer_target(target)
+        if y_dtype not in ["floating", "mixed-integer-float"]:
+            target = pd.Series(self.target_encoder.fit_transform(target), name=target.name).astype(str)
         return target
 
     def transform(self, data: pd.DataFrame) -> pd.DataFrame:
-        categorical_cols = data[self.categorical_cols].map(lambda x: str(x))
-        encoded_data = pd.DataFrame(
-            self.encoder.transform(categorical_cols).toarray(),
-            columns=self.encoder.get_feature_names_out(),
-        )
-        num_cols = data.drop(columns=self.cols_to_drop)
-        data = pd.concat([num_cols, encoded_data], axis=1)
+        categorical_frame = data[self.categorical_cols].astype(str)
+        numerical_frame = data[self.numerical_cols]
+        encoded_data = pd.DataFrame(self.encoder.transform(categorical_frame).toarray(), columns=self.encoder.get_feature_names_out()).astype(bool)
+        data = pd.concat([numerical_frame, encoded_data], axis=1)
         return data
 
     def inverse_transform(self, data: pd.DataFrame) -> pd.DataFrame:
         to_decode = data[self.encoded_cols]
-        encoded_data = pd.DataFrame(
-            self.encoder.inverse_transform(to_decode), columns=self.categorical_cols
-        )
+        encoded_data = pd.DataFrame(self.encoder.inverse_transform(to_decode.astype(bool)), columns=self.categorical_cols)
         data.drop(columns=to_decode.columns, inplace=True)
         data[encoded_data.columns] = encoded_data
         data = data[self.column_order]
         return data
 
-    def transform_target(self, target: pd.Series) -> pd.Series | pd.DataFrame:
-        if not pd.api.types.is_float_dtype(target):
-            target = pd.Series(
-                self.target_encoder.fit_transform(target), name=target.name
-            )
+    def transform_target(self, target: pd.Series) -> pd.Series:
+        y_dtype = self.type_inferer.recall_target()
+        if y_dtype not in ["floating", "mixed-integer-float"]:
+            target = pd.Series(self.target_encoder.transform(target), name=target.name).astype(str)
         return target
 
     def inverse_transform_target(self, target: pd.Series) -> pd.Series:
-        return self.target_encoder.inverse_transform(target)
+        return self.target_encoder.inverse_transform(target.astype(int))
 
 
 def main():
@@ -85,8 +72,8 @@ def main():
     )
     data = dataset.drop(columns=["target"])
     target = dataset["target"]
-    ohe = Encoder()
-    result = ohe.fit_transform(data)
+    encoder = Encoder()
+    result = encoder.fit_transform(data)
     print("Before OHE:")
     print(data)
     print(target)
@@ -105,21 +92,39 @@ def main():
             "E": [1, 1, 1, 1],
         }
     )
-    data2 = ohe.transform(data2)
+    data2 = encoder.transform(data2)
     print("Encoding more data:")
     print(data2)
     print()
-    data = ohe.inverse_transform(result)
+    data = encoder.inverse_transform(result)
     print("Inverse Data:")
     print(data)
     print()
-    target = ohe.fit_transform_target(target)
+    target = encoder.fit_transform_target(target)
     print("After OHE Target:")
     print(target)
-    target = ohe.inverse_transform_target(target)
+    target = encoder.inverse_transform_target(target)
     print("Inverse Target:")
     print(target)
     assert all(target == ["frog", "duck", "hen", "frog"])
+
+    data3 = pd.DataFrame(
+        {
+            "A": [2],
+            "B": [20],
+            "C": ["b"],
+            "D": [0],
+            "E": [1],
+            "target": ["duck"],
+        }
+    )
+    target3 = data3["target"]
+    data3 = encoder.transform(data3.drop(columns=["target"]))
+    print("Encoding single data:")
+    print(data3)
+    target3 = encoder.transform_target(target3)
+    print("Encoding single target:")
+    print(target3)
 
 
 if __name__ == "__main__":
