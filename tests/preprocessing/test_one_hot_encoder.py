@@ -103,7 +103,7 @@ def test_target():
     target = BASE_DATAFRAME["target"]
     encoder = Encoder()
     target = encoder.fit_transform_target(target)
-    assert all(target == pd.Series([1, 0, 2, 1], dtype="str"))
+    assert all(target == pd.Series([1, 0, 2, 1]))
 
 
 def test_one_hot_encoder_inverse():

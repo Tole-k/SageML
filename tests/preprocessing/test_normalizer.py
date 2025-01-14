@@ -8,7 +8,7 @@ BASE_DATAFRAME = pd.DataFrame({
     'C': ["a", "b", "c", "d"],
     'D': [False, True, False, True],
     'E': [1, 0.2, "c", 0],
-    'target': [45, 22, 69, 18],
+    'target': [45.0, 22.0, 69.0, 18.0],
 })
 BASIC_DATA = BASE_DATAFRAME.drop(columns=["target"])
 BASIC_TARGET = BASE_DATAFRAME["target"]

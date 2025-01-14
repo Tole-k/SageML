@@ -31,7 +31,7 @@ class Encoder(Preprocessor):
     def fit_transform_target(self, target: pd.Series) -> pd.Series:
         y_dtype = self.type_inferer.infer_target(target)
         if y_dtype not in ["floating", "mixed-integer-float"]:
-            target = pd.Series(self.target_encoder.fit_transform(target), name=target.name).astype(str)
+            target = pd.Series(self.target_encoder.fit_transform(target), name=target.name).astype(int)
         return target
 
     def transform(self, data: pd.DataFrame) -> pd.DataFrame:
@@ -52,7 +52,7 @@ class Encoder(Preprocessor):
     def transform_target(self, target: pd.Series) -> pd.Series:
         y_dtype = self.type_inferer.recall_target()
         if y_dtype not in ["floating", "mixed-integer-float"]:
-            target = pd.Series(self.target_encoder.transform(target), name=target.name).astype(str)
+            target = pd.Series(self.target_encoder.transform(target), name=target.name).astype(int)
         return target
 
     def inverse_transform_target(self, target: pd.Series) -> pd.Series:

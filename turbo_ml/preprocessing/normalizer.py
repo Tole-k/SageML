@@ -1,4 +1,4 @@
-from unicodedata import numeric
+
 import numpy as np
 import pandas as pd
 from ..base.preprocess import Preprocessor
@@ -25,7 +25,7 @@ class Normalizer(Preprocessor):
 
     def fit_transform_target(self, target: pd.Series) -> pd.Series:
         y_dtype = self.type_inferer.infer_target(target)
-        if y_dtype in ["floating", "integer", "mixed-integer-float"]:
+        if y_dtype in ["floating", "mixed-integer-float"]:
             target = pd.Series(self.target_scaler.fit_transform(np.transpose([target]))[:, 0]).astype(float)
         return target
 
@@ -41,13 +41,13 @@ class Normalizer(Preprocessor):
 
     def transform_target(self, target: pd.Series) -> pd.Series:
         y_dtype = self.type_inferer.recall_target()
-        if y_dtype in ["floating", "integer", "mixed-integer-float"]:
+        if y_dtype in ["floating", "mixed-integer-float"]:
             target = pd.Series(self.target_scaler.transform(np.transpose([target]))[:, 0]).astype(float)
         return target
 
     def inverse_transform_target(self, target: pd.Series) -> pd.Series:
         y_dtype = self.type_inferer.recall_target()
-        if y_dtype in ["floating", "integer", "mixed-integer-float"]:
+        if y_dtype in ["floating", "mixed-integer-float"]:
             target = pd.Series(self.target_scaler.inverse_transform(np.transpose([target]))[:, 0]).astype(float)
         return target
 
