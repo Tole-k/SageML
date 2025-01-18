@@ -1,12 +1,12 @@
+from turbo_ml.utils import options
+from turbo_ml.meta_learning import MetaModelGuesser, get_sota_meta_features
+from turbo_ml.preprocessing import sota_preprocessor
+from turbo_ml.workflow import train_meta_model
+from .utils import BaseExperiment, _FAMILY_MAPPING, ClassificationFamily
+import pandas as pd
 import sys
 sys.path.append('.')
-import pandas as pd
 
-from utils import BaseExperiment, _FAMILY_MAPPING, ClassificationFamily
-from turbo_ml.workflow import train_meta_model
-from turbo_ml.preprocessing import sota_preprocessor
-from turbo_ml.meta_learning import MetaModelGuesser, get_sota_meta_features
-from turbo_ml.utils import options
 
 _FAMILY_MAPPING = {
     "RadiusNeighborsClassifier": ClassificationFamily.NEAREST_NEIGHBOR_METHOD,
@@ -15,18 +15,18 @@ _FAMILY_MAPPING = {
     "GradientBoostingClassifier": ClassificationFamily.BOOSTING,
     "QuadraticDiscriminantAnalysis": ClassificationFamily.DISCRIMINANT_ANALYSIS,
     "XGBoostClassifier": ClassificationFamily.BOOSTING,
-    "SGDClassifier": ClassificationFamily.SVM, # default but depends on loss
+    "SGDClassifier": ClassificationFamily.SVM,  # default but depends on loss
     "AdaBoostClassifier": ClassificationFamily.BOOSTING,
     "GaussianNB": ClassificationFamily.BAYESIAN_METHOD,
     "RandomForestClassifier": ClassificationFamily.RANDOM_FOREST,
     "ExtraTreesClassifier": ClassificationFamily.RANDOM_FOREST,
     "RandomGuesser": ClassificationFamily.OTHER_METHOD,
     "BernoulliNB": ClassificationFamily.BAYESIAN_METHOD,
-    "PassiveAggressiveClassifier": ClassificationFamily.LOGISTIC_AND_MULTINOMINAL_REGRESSION, #?
+    "PassiveAggressiveClassifier": ClassificationFamily.LOGISTIC_AND_MULTINOMINAL_REGRESSION,  # ?
     "SVC": ClassificationFamily.SVM,
     "DummyClassifier": ClassificationFamily.OTHER_METHOD,
     "HistGradientBoostingClassifier": ClassificationFamily.BOOSTING,
-    "GaussianProcessClassifier": ClassificationFamily.OTHER_METHOD, #?
+    "GaussianProcessClassifier": ClassificationFamily.OTHER_METHOD,  # ?
     "LabelPropagation": ClassificationFamily.NEAREST_NEIGHBOR_METHOD,
     "LinearSVC": ClassificationFamily.SVM,
     "BaggingClassifier": ClassificationFamily.BAGGING,
@@ -35,10 +35,10 @@ _FAMILY_MAPPING = {
     "ComplementNB": ClassificationFamily.BAYESIAN_METHOD,
     "LabelSpreading": ClassificationFamily.NEAREST_NEIGHBOR_METHOD,
     "DecisionTreeClassifier": ClassificationFamily.DECISION_TREE,
-    "Perceptron": ClassificationFamily.LOGISTIC_AND_MULTINOMINAL_REGRESSION, # wrapper on SGDClassifier
+    "Perceptron": ClassificationFamily.LOGISTIC_AND_MULTINOMINAL_REGRESSION,  # wrapper on SGDClassifier
     "AdaBoostRegressor": ClassificationFamily.BOOSTING,
     "GradientBoostingClassifier": ClassificationFamily.BOOSTING,
-    "CalibratedClassifierCV": ClassificationFamily.OTHER_ENSEMBLE, #?
+    "CalibratedClassifierCV": ClassificationFamily.OTHER_ENSEMBLE,  # ?
     "ExtraTreeClassifier": ClassificationFamily.DECISION_TREE,
     "KNeighborsClassifier": ClassificationFamily.NEAREST_NEIGHBOR_METHOD,
     "LinearDiscriminantAnalysis": ClassificationFamily.DISCRIMINANT_ANALYSIS,
@@ -47,7 +47,9 @@ _FAMILY_MAPPING = {
     "MultinomialNB": ClassificationFamily.BAYESIAN_METHOD,
     "NearestCentroid": ClassificationFamily.NEAREST_NEIGHBOR_METHOD,
     "RidgeClassifierCV": ClassificationFamily.LOGISTIC_AND_MULTINOMINAL_REGRESSION,
+    "NeuralNetworkModel": ClassificationFamily.NEURAL_NETWORK,
 }
+
 
 class TurboMLExperiment(BaseExperiment):
     def __init__(self):
@@ -67,7 +69,7 @@ class TurboMLExperiment(BaseExperiment):
         preprocessor = sota_preprocessor()
         data = preprocessor.fit_transform(data)
         target_data = preprocessor.fit_transform_target(target_data)
-        dataset_params = get_sota_meta_features("all")(
+        dataset_params = get_sota_meta_features(options.meta_features)(
             data, target_data, as_dict=True)
         guesser = MetaModelGuesser(
             model=model, preprocessors=preprocessor_dataset, device=options.device)
