@@ -8,7 +8,7 @@ import sys
 sys.path.append('.')
 
 
-_FAMILY_MAPPING = {
+_ALGO_2_FAMILY_MAPPING = {
     "RadiusNeighborsClassifier": ClassificationFamily.NEAREST_NEIGHBOR_METHOD,
     "CategoricalNB": ClassificationFamily.BAYESIAN_METHOD,
     "RidgeClassifier": ClassificationFamily.LOGISTIC_AND_MULTINOMINAL_REGRESSION,
@@ -37,7 +37,6 @@ _FAMILY_MAPPING = {
     "DecisionTreeClassifier": ClassificationFamily.DECISION_TREE,
     "Perceptron": ClassificationFamily.LOGISTIC_AND_MULTINOMINAL_REGRESSION,  # wrapper on SGDClassifier
     "AdaBoostRegressor": ClassificationFamily.BOOSTING,
-    "GradientBoostingClassifier": ClassificationFamily.BOOSTING,
     "CalibratedClassifierCV": ClassificationFamily.OTHER_ENSEMBLE,  # ?
     "ExtraTreeClassifier": ClassificationFamily.DECISION_TREE,
     "KNeighborsClassifier": ClassificationFamily.NEAREST_NEIGHBOR_METHOD,
@@ -52,10 +51,11 @@ _FAMILY_MAPPING = {
 
 
 class TurboMLExperiment(BaseExperiment):
-    def __init__(self):
+    def __init__(self, mode='algorithm'):
         self.name = self.__class__.__name__
         self.parameters = self._get_parameters()
         self.data = pd.read_csv("data/family_scores.csv")
+        self.mode = mode
 
     def rank_families(self, dataset, dataset_name, *_):
         training_frame = self.data[self.data["name"] != dataset_name].copy()
@@ -72,11 +72,12 @@ class TurboMLExperiment(BaseExperiment):
         dataset_params = get_sota_meta_features(options.meta_features)(
             data, target_data, as_dict=True)
         guesser = MetaModelGuesser(
-            model=model, preprocessors=preprocessor_dataset, device=options.device)
+            model=model, preprocessors=preprocessor_dataset, mode=self.mode)
         models = guesser.predict(dataset_params)
-        return [_FAMILY_MAPPING[model.__name__] for model in [models]]
+        result = [_ALGO_2_FAMILY_MAPPING[model.__name__] for model in [models]] if self.mode == 'algorithm' else [_FAMILY_MAPPING[model] for model in [models]]
+        return result
 
 
 if __name__ == "__main__":
-    experiment = TurboMLExperiment()
-    experiment.perform_experiments(durations=[60])
+    experiment = TurboMLExperiment(mode='family')
+    experiment.perform_experiments(durations=[30], seeds=[0])

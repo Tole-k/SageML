@@ -117,7 +117,7 @@ if __name__ == "__main__":
         "PyCaretExperiment",
         # "SklearnExperiment",
         # "TPotExperiment",
-        # "TurboMLExperiment",
+        "TurboMLExperiment",
         "AutoGRDExperiment",
         "AutoIRADExperiment",
     ]
@@ -125,4 +125,4 @@ if __name__ == "__main__":
     datasets = datasets["name"]
     datasets = datasets.to_list()
 
-    friedman_test(experiments, datasets, TEST_DURATIONS, 0.05)
+    friedman_test(experiments, datasets, [30], 0.05)

@@ -1,5 +1,6 @@
 from functools import cache
 import pickle
+from typing import Literal
 
 from turbo_ml.base.model import Model
 from turbo_ml.utils import options
@@ -20,13 +21,13 @@ __GROUP_NAMES__ = ["Bagging_(BAG)", "Bayesian_Methods_(BY)", "Boosting_(BST)", "
 class MetaModelGuesser(Predictor):
     """ Search for the best meta model for a given dataset and model """
 
-    def __init__(self, device='cpu', model=None, preprocessors=None, path: str = None):
-        self.device = device
+    def __init__(self, model=None, preprocessors=None, path: str = None, mode: Literal['algorithm', 'family'] = 'algorithm'):
         if path is None:
             dirname = os.path.dirname(__file__)
             path = os.path.join(dirname, 'model')
         self._path = path
         self.device = options.device
+        self.mode = mode
 
         param_path = os.path.join(self._path, 'model_params.pkl')
         with open(param_path, 'rb') as f:
@@ -57,9 +58,13 @@ class MetaModelGuesser(Predictor):
         model_list = [(idx, float(i)) for idx, i in enumerate(model_values)]
         model_list.sort(key=lambda x: x[1], reverse=True)
         best_models = model_list[:n]
-        models_names = [__MODELS_NAMES__[idx] for idx, _ in best_models]
-        translate = MetaModelGuesser._get_str_to_model_dict()
-        return list(map(lambda x: translate[x], models_names))
+        if self.mode == 'algorithm':
+            models_names = [__MODELS_NAMES__[idx] for idx, _ in best_models]
+            translate = MetaModelGuesser._get_str_to_model_dict()
+            return list(map(lambda x: translate[x], models_names))
+        else:
+            groups_names = [__GROUP_NAMES__[idx] for idx, _ in best_models]
+            return groups_names
 
     def _load_meta_model(self):
         model = ModelArchitecture(self._config['input_size'],
