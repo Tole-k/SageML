@@ -20,7 +20,8 @@ class TurboML_Experimental:
     def __init__(self, dataset: pd.DataFrame, target: Optional[str] = None, device: Literal['cpu', 'cuda', 'mps', 'auto'] = 'auto', threads: int = 1, hpo_enabled: bool = False,
                  guesser: MetaModelGuesser = None, tuner: HyperTuner = None, param_function: Optional[callable] = None):
         if guesser is None:
-            self.guesser = MetaModelGuesser()
+            guesser = MetaModelGuesser()
+        self.guesser = guesser
         if tuner is None:
             tuner = HyperTuner()
         if param_function is None:
