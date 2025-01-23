@@ -1,5 +1,6 @@
 import logging
 from typing import Literal
+from turbo_ml.utils.types import DATASET_PARAMS_TYPES
 import torch
 
 
@@ -15,10 +16,9 @@ class options:
         self.dev_mode_logging = logging.INFO
         self.user_mode_logging = logging.ERROR
         self.blacklist = ['CalibratedClassifierCV']
-        self.hyperparameters_declaration_priority: Literal['sklearn',
-                                                           'custom'] = 'custom'
+        self.hyperparameters_declaration_priority: Literal['sklearn', 'custom'] = 'custom'
         self.hpo_trials = 10
-        self.meta_features = 'all'
+        self.meta_features: DATASET_PARAMS_TYPES = 'all'
 
     @property
     def device(self):
