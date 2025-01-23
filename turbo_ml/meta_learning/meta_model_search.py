@@ -48,6 +48,7 @@ class MetaModelGuesser(Predictor):
         pre_frame = self._preprocessor.transform(frame)
         train = torch.tensor(pre_frame.values.astype(
             'float32')).to(self.device)
+        self.last_input = train
 
         with torch.inference_mode():
             model_values = self._meta_model(train).cpu()[0]

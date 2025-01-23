@@ -19,3 +19,6 @@ scikit_posthocs
 prefect
 prefect[dask]
 tqdm
+
+# Data explainability
+captum

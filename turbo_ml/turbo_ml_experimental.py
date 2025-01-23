@@ -20,7 +20,7 @@ class TurboML_Experimental:
     def __init__(self, dataset: pd.DataFrame, target: Optional[str] = None, device: Literal['cpu', 'cuda', 'mps', 'auto'] = 'auto', threads: int = 1, hpo_enabled: bool = False,
                  guesser: MetaModelGuesser = None, tuner: HyperTuner = None, param_function: Optional[callable] = None):
         if guesser is None:
-            guesser = MetaModelGuesser()
+            self.guesser = MetaModelGuesser()
         if tuner is None:
             tuner = HyperTuner()
         if param_function is None:
@@ -38,13 +38,13 @@ class TurboML_Experimental:
         data = self.preprocessor.fit_transform(data)
         target_data = self.preprocessor.fit_transform_target(target_data)
 
-        dataset_params = param_function(data, target_data, as_dict=True)
+        self.dataset_params = param_function(data, target_data, as_dict=True)
 
-        self._algorithm = guesser.predict(dataset_params)
+        self._algorithm = self.guesser.predict(self.dataset_params)
 
         if hpo_enabled:
             self.hyperparameters = tuner.optimize_hyperparameters(
-                self._algorithm, (data, target_data), dataset_params['task'], dataset_params['num_classes'], dataset_params['target_features'])
+                self._algorithm, (data, target_data), self.dataset_params['task'], self.dataset_params['num_classes'], self.dataset_params['target_features'])
         self.model = self._algorithm(**self.hyperparameters)
 
         self.model.train(data, target_data)

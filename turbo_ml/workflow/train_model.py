@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 def train_meta_model(feature_frame: pd.DataFrame | str | None = None, evaluations_frame: pd.DataFrame | str | None = None,
                      epochs: int = 7000) -> Tuple[ModelArchitecture, Any]:
     if feature_frame is None:
-        feature_frame = 'parameters.csv'
+        feature_frame = 'data/parameters.csv'
     if isinstance(feature_frame, str):
         feature_frame = pd.read_csv(feature_frame)
 
