@@ -1,5 +1,5 @@
 import pandas as pd
-from turbo_ml.preprocessing.one_hot_encoder import OneHotEncoder
+from sageml.preprocessing.one_hot_encoder import OneHotEncoder
 
 BASE_DATAFRAME = pd.DataFrame(
     {

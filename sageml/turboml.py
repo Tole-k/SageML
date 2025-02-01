@@ -19,7 +19,7 @@ from sageml.utils import options
 logging.basicConfig(level=logging.INFO)
 
 
-class TurboML:
+class SageML:
     """
     The `TurboML` class provides an out-of-the-box AutoML solution that automatically
     selects and trains the best machine learning model for a given dataset. It handles

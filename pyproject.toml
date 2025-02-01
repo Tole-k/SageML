@@ -1,7 +1,7 @@
 [tool.poetry]
 [project]
 name = "sageml"
-version = "0.1.3"
+version = "0.1.3.1"
 description = ""
 authors = [
     {name = "Dawid64",email = "dawid.siera@gmail.com"},
@@ -30,4 +30,4 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [project.scripts]
-turbo_ml = "turbo_ml.__main__:main"
+sage_ml = "sageml.__main__:main"

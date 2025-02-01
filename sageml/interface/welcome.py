@@ -5,7 +5,7 @@ import sys
 from collections import defaultdict
 from .items import print_in_box, Box
 from .tutorial import TUTORIAL_DICT, TUTORIAL_NAMES
-from sageml import TurboML
+from sageml import SageML
 import pandas as pd
 
 LOGO = """
@@ -125,7 +125,7 @@ def load_dataset():
     dataset = pd.read_csv(__DATASET_PATH)
     print(f'Dataset columns: {dataset.columns}')
     target = input('Choose target column: ')
-    model = TurboML(dataset, target)
+    model = SageML(dataset, target)
     print('Model trained, give path to data to predict')
     test_set = pd.read_csv(input('Path: '))
     predictions = model.predict(test_set)
