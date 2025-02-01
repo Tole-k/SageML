@@ -1,5 +1,5 @@
 """ 
-Main module implementing interactive command line interface for Turbo-ML library.
+Main module implementing interactive command line interface for SageML library.
 """
 import sys
 from collections import defaultdict
@@ -8,6 +8,7 @@ from .tutorial import TUTORIAL_DICT, TUTORIAL_NAMES
 from sageml import SageML
 import pandas as pd
 
+# TODO: Change Ascii art to SageML
 LOGO = """
   ______           __                __  _____ 
  /_  __/_  _______/ /_  ____        /  |/  / / 
@@ -17,13 +18,13 @@ LOGO = """
 """
 
 WELCOME_MESSAGE = """
-Welcome in Turbo-ML, this piece of software was created in order to make machine learning simple.
+Welcome in SageML, this piece of software was created in order to make machine learning simple.
 Given some dataset algorithms from library should be able to find the best machine learning algorithm with optimal parameters to solve problem provided in dataset whether this is classification or regression task.
 
 ## Guide ##
 - load your dataset
-- call TurboML(dataset) to train model
-- call TurboML.predict(data) to find predictions
+- call SageML(dataset) to train model
+- call SageML.predict(data) to find predictions
 """
 
 RESPONSES = defaultdict(lambda: None, {
@@ -111,7 +112,7 @@ def welcome():
                 sys.stdout.write(f"{' '*100}\n")
                 sys.stdout.write('\033[F')
                 _ask(counter+1)
-    num_lines = print_in_box(WELCOME_MESSAGE, topic='Welcome in Turbo-ML ')
+    num_lines = print_in_box(WELCOME_MESSAGE, topic='Welcome in SageML ')
     _ask(0)
     print(f"""Now there should be calculations for dataset in file {
           __DATASET_PATH}""")

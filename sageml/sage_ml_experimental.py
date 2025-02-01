@@ -1,4 +1,4 @@
-""" Experimental Turbo-ML pipeline, newer but not fully tested version.
+""" Experimental SageML pipeline, newer but not fully tested version.
 If something from here is not working, or you're getting some errors DO NOT make github issues.
 This version is made mainly for testing new pipelines for newer version.
 As this version does not provide logging or error handling it may be faster
@@ -14,7 +14,7 @@ from sageml.base import Model, __ALL_MODELS__
 from sageml.utils import options
 
 
-class TurboML_Experimental:
+class SageML_Experimental:
     def __init__(self, dataset: pd.DataFrame, target: Optional[str] = None, device: Literal['cpu', 'cuda', 'mps'] = 'cpu', threads: int = 1, hpo_trials: int = 10):
         options.device = device
         options.threads = threads

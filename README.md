@@ -1,5 +1,5 @@
 # SageML
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/Turbo-ML)](https://pypi.org/project/Turbo-ML/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/SageML)](https://pypi.org/project/SageML/)
 
 **SageML** is an out-of-the-box AutoML solution designed to simplify the machine learning workflow. With minimal user input, SageML automates model selection, hyperparameter optimization, and provides a trained machine learning model ready for deployment.
 
@@ -30,7 +30,7 @@
 SageML is available on PyPI. You can install it using `pip`:
 
 ```bash
-pip install turbo-ml
+pip install sageml
 ```
 
 > **Note**: For the latest features and updates, you might want to install from the GitHub repository.
@@ -40,20 +40,20 @@ pip install turbo-ml
 Here's how you can get started with SageML in just a few lines of code:
 
 ```python
-from turbo_ml import TurboML
+from sageml import SageML
 import pandas as pd
-# Initialize TurboML with your dataset
-turboML = TurboML(pd.read_csv('classified/data.csv'), target='target')
+# Initialize SageML with your dataset
+sageml = SageML(pd.read_csv('classified/data.csv'), target='target')
 
 # Make predictions
-predictions = turboML.predict(pd.read_csv('not/classified/data.csv'))
+predictions = sageml.predict(pd.read_csv('not/classified/data.csv'))
 ```
 
 ## Usage
 
 ### Data Preprocessing
 
-TurboML automatically preprocesses your data to make it suitable for machine learning algorithms.
+SageML automatically preprocesses your data to make it suitable for machine learning algorithms.
 
 - Handles missing values with appropriate imputation methods.
 - Encodes categorical variables using techniques like One-Hot Encoding.
