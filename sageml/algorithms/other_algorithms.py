@@ -1,5 +1,5 @@
-from turbo_ml.utils import options
-from turbo_ml.base import Model
+from sageml.utils import options
+from sageml.base import Model
 from sklearn.utils import all_estimators
 from typing import Dict, Type
 sklearn_models: Dict[str, Type[Model]] = {}
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # print(len(models))
     # print('-'*50)
     # print(models.keys())
-    from turbo_ml.meta_learning.model_prediction import HyperTuner, StatisticalParametersExtractor
+    from sageml.meta_learning.model_prediction import HyperTuner, StatisticalParametersExtractor
     for data, target in [get_breast_cancer(), get_iris()]:
         extractor = StatisticalParametersExtractor(data, target)
         characteristics = extractor.describe_dataset()

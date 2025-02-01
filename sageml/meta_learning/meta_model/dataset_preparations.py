@@ -6,10 +6,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import minmax_scale
 from pydataset import data
 
-from turbo_ml.algorithms import NeuralNetworkModel, XGBoostClassifier, sklearn_models
-from turbo_ml.preprocessing import Normalizer, NanImputer, OneHotEncoder, LabelEncoder
-from turbo_ml.meta_learning.model_prediction import HyperTuner, StatisticalParametersExtractor
-from turbo_ml.utils import options
+from sageml.algorithms import NeuralNetworkModel, XGBoostClassifier, sklearn_models
+from sageml.preprocessing import Normalizer, NanImputer, OneHotEncoder, LabelEncoder
+from sageml.meta_learning.model_prediction import HyperTuner, StatisticalParametersExtractor
+from sageml.utils import options
 
 
 def generate_dataset(models, datasets, optuna_trials=10, device='cpu', threads=1, path='results.csv'):

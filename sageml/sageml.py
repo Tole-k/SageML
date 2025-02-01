@@ -1,7 +1,7 @@
 """
-turboml.py
+sageml.py
 
-This module provides the `TurboML` class, our main class for out-of-the-box autoML solution.
+This module provides the `SageML` class, our main class for out-of-the-box autoML solution.
 It does not provide additional functionalities but it combines other modules to provide a complete solution.
 """
 import pandas as pd
@@ -10,18 +10,18 @@ from typing import Literal, Optional
 import time
 import logging
 
-from turbo_ml.preprocessing import sota_preprocessor
-from turbo_ml.meta_learning import StatisticalParametersExtractor, ExhaustiveSearch, MetaModelGuesser, HyperTuner
-from turbo_ml.algorithms import RandomGuesser as DummyModel
-from turbo_ml.base import Model, __ALL_MODELS__
-from turbo_ml.utils import options
+from sageml.preprocessing import sota_preprocessor
+from sageml.meta_learning import StatisticalParametersExtractor, ExhaustiveSearch, MetaModelGuesser, HyperTuner
+from sageml.algorithms import RandomGuesser as DummyModel
+from sageml.base import Model, __ALL_MODELS__
+from sageml.utils import options
 
 logging.basicConfig(level=logging.INFO)
 
 
-class TurboML:
+class SageML:
     """
-    The `TurboML` class provides an out-of-the-box AutoML solution that automatically
+    The `SageML` class provides an out-of-the-box AutoML solution that automatically
     selects and trains the best machine learning model for a given dataset. It handles
     data validation, statistical parameter extraction, model selection, hyperparameter
     optimization, and model training.
@@ -29,20 +29,20 @@ class TurboML:
     **Example:**
 
     ```python
-    from turbo_ml import TurboML
+    from sageml import SageML
     import pandas as pd
 
     # Load your dataset
     df = pd.read_csv('your_dataset.csv')
 
-    # Initialize TurboML with the dataset and target column
-    turboml = TurboML(dataset=df, target='target_column_name')
+    # Initialize SageML with the dataset and target column
+    sageml = SageML(dataset=df, target='target_column_name')
 
     # Prepare new data for prediction
     new_data = pd.read_csv('new_data.csv')
 
     # Make predictions
-    predictions = turboml.predict(new_data)
+    predictions = sageml.predict(new_data)
     ```
 
     **Attributes:**
@@ -52,7 +52,7 @@ class TurboML:
 
     def __init__(self, dataset: pd.DataFrame, target: Optional[str] = None, verbose: bool = True, device: Literal['cpu', 'cuda', 'mps'] = 'cpu', threads: int = 1, hpo_trials: int = 10):
         """
-        Initializes the `TurboML` instance by performing the following steps:
+        Initializes the `SageML` instance by performing the following steps:
 
         - Validates the input dataset and target column.
         - Extracts statistical parameters from the dataset.
@@ -76,7 +76,7 @@ class TurboML:
         options.threads = threads
         self.logger.setLevel(
             'INFO') if verbose else self.logger.setLevel('ERROR')
-        self.logger.info("Initializing TurboML...")
+        self.logger.info("Initializing SageML...")
         self.model: Model = DummyModel()
         start_time = time.time()
         if target is None:
