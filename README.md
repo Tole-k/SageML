@@ -1,5 +1,5 @@
 # SageML
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/Turbo-ML)](https://pypi.org/project/Turbo-ML/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/Turbo-ML)](https://pypi.org/project/sageml/)
 
 **SageML** is an out-of-the-box AutoML solution designed to simplify the machine learning workflow. With minimal user input, SageML automates model selection, hyperparameter optimization, and provides a trained machine learning model ready for deployment.
 
