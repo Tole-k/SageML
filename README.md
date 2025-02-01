@@ -83,7 +83,7 @@ Detailed documentation should be available soon.
 
 We welcome contributions from the community!
 
-- **Bug Reports & Feature Requests**: Use the [GitHub Issues](https://github.com/Tole-k/turbo-ml/issues) to report bugs or suggest features.
+- **Bug Reports & Feature Requests**: Use the [GitHub Issues](https://github.com/Tole-k/SageML/issues) to report bugs or suggest features.
 
 ## License
 
