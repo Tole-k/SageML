@@ -1,7 +1,7 @@
 import numpy as np
 import xgboost as xgb
 
-from turbo_ml.utils import options
+from sageml.utils import options
 from ..base import Model
 from typing import Optional, List, Literal
 from sklearn.model_selection import train_test_split

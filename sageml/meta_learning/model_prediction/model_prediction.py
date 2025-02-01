@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import *
-from turbo_ml.base import Model
-from turbo_ml.base.model import get_models_list
+from sageml.base import Model
+from sageml.base.model import get_models_list
 import random
 import math
 

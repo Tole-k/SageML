@@ -5,9 +5,9 @@ from typing import Tuple
 import pandas as pd
 from typing import Literal
 import json
-from turbo_ml.algorithms import NeuralNetworkModel
-from turbo_ml.base import Model
-from turbo_ml.utils import options
+from sageml.algorithms import NeuralNetworkModel
+from sageml.base import Model
+from sageml.utils import options
 
 
 class HyperTuner:
@@ -110,7 +110,7 @@ def __main_import__():
 
 if __name__ == '__main__':
     get_iris, get_diabetes, get_breast_cancer, get_linnerud = __main_import__()
-    from turbo_ml.algorithms import AdaBoostClassifier, AdaBoostRegressor, XGBoostClassifier, XGBoostRegressor
+    from sageml.algorithms import AdaBoostClassifier, AdaBoostRegressor, XGBoostClassifier, XGBoostRegressor
     tuner = HyperTuner()
     dataset = get_iris()
     model = AdaBoostClassifier

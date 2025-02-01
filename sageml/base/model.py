@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import pickle
 from typing import List, Iterable, Any, Type
-from turbo_ml.utils.error_tools.exceptions import NotTrainedException
+from sageml.utils.error_tools.exceptions import NotTrainedException
 from .process import Process
 
 __ALL_MODELS__: List[type] = []

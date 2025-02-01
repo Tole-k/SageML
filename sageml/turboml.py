@@ -10,11 +10,11 @@ from typing import Literal, Optional
 import time
 import logging
 
-from turbo_ml.preprocessing import sota_preprocessor
-from turbo_ml.meta_learning import StatisticalParametersExtractor, ExhaustiveSearch, MetaModelGuesser, HyperTuner
-from turbo_ml.algorithms import RandomGuesser as DummyModel
-from turbo_ml.base import Model, __ALL_MODELS__
-from turbo_ml.utils import options
+from sageml.preprocessing import sota_preprocessor
+from sageml.meta_learning import StatisticalParametersExtractor, ExhaustiveSearch, MetaModelGuesser, HyperTuner
+from sageml.algorithms import RandomGuesser as DummyModel
+from sageml.base import Model, __ALL_MODELS__
+from sageml.utils import options
 
 logging.basicConfig(level=logging.INFO)
 
